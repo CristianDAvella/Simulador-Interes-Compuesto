@@ -110,15 +110,17 @@ flowchart TD
 
 **Comparación (RF-11):** el mismo algoritmo se ejecuta dos veces, sin abonos y con abonos. Se reporta: intereses ahorrados, cuotas ahorradas y cuota final vigente.
 
-### 2.3 Casos de prueba (verificados con un prototipo el 2026-11-16)
+### 2.3 Casos de prueba (verificados con un prototipo y con el motor el 2026-11-16)
 
-Crédito base: $10.000.000, 2 % mensual vencida, 12 meses → cuota $945.596; intereses totales sin abonos: **$1.347.153**.
+Los totales de intereses se calculan con precisión completa y se redondean al final (§3.1). Sumar las filas ya redondeadas puede diferir en 1 o 2 pesos.
+
+Crédito base: $10.000.000, 2 % mensual vencida, 12 meses → cuota $945.596; intereses totales sin abonos: **$1.347.152**.
 
 | Escenario | Resultado esperado |
 |---|---|
 | Sin abonos | 12 cuotas de $945.596, saldo final $0 |
-| Abono de $2.000.000 en el mes 3, **reducir cuota** | Saldo $5.718.178; cuotas 4–12 de **$700.565**; 12 cuotas en total; intereses $1.141.875 (ahorro ≈ $205.278) |
-| Abono de $2.000.000 en el mes 3, **reducir plazo** | Cuotas 4–9 de $945.596 y cuota 10 residual de **$484.157**; 10 cuotas en total; intereses $994.520 (ahorro ≈ $352.633) |
+| Abono de $2.000.000 en el mes 3, **reducir cuota** | Saldo $5.718.178; cuotas 4–12 de **$700.565**; 12 cuotas en total; intereses $1.141.874 (ahorro ≈ $205.278) |
+| Abono de $2.000.000 en el mes 3, **reducir plazo** | Cuotas 4–9 de $945.596 y cuota 10 residual de **$484.157**; 10 cuotas en total; intereses $994.521 (ahorro ≈ $352.631) |
 | Referencia Bancolombia: $200 M, 1,84 % MV, 84 meses | Cuota $4.695.074; mes 1: interés $3.680.000, capital $1.015.074, saldo $198.984.926 |
 | Abono igual al saldo | Crédito cancelado en ese mes; no quedan filas después |
 | Abono mayor al saldo | Error de validación indicando cuál abono es |

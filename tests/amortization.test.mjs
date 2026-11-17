@@ -3,10 +3,8 @@ import assert from 'node:assert/strict';
 import { cuotaFija, simularCredito, compararEscenarios } from '../src/engine/amortization.js';
 
 const PESO = 1; // tolerancia en pesos contra los valores documentados y redondeados
-// Los totales acumulan el redondeo de varias filas (§3.1: "una columna puede
-// no sumar exactamente, con diferencias de ±$1"); sobre 12 filas se permite
-// un margen algo mayor que sobre una sola fila.
-const PESO_TOTAL = 3;
+// Los totales de intereses documentados en calculation-flow.md §2.3 ya están
+// calculados con precisión completa, así que también se comparan con ±1 peso.
 
 function sumaCapitalMasAbonos(resultado) {
   const capital = resultado.filas.reduce((acc, f) => acc + f.capital, 0);
@@ -37,7 +35,7 @@ describe('simularCredito — crédito base sin abonos (§2.3)', () => {
   });
 
   test('intereses totales = 1.347.153', () => {
-    assert.ok(Math.abs(r.resumen.totalIntereses - 1347153) < PESO_TOTAL, `intereses=${r.resumen.totalIntereses}`);
+    assert.ok(Math.abs(r.resumen.totalIntereses - 1347152) < PESO, `intereses=${r.resumen.totalIntereses}`);
   });
 
   test('suma capital + abonos == monto (±0.01)', () => {
@@ -63,7 +61,7 @@ describe('simularCredito — abono $2.000.000 mes 3, reducir_cuota (§2.3)', () 
 
   test('12 cuotas en total, intereses 1.141.875', () => {
     assert.equal(r.filas.length, 12);
-    assert.ok(Math.abs(r.resumen.totalIntereses - 1141875) < PESO_TOTAL, `intereses=${r.resumen.totalIntereses}`);
+    assert.ok(Math.abs(r.resumen.totalIntereses - 1141874) < PESO, `intereses=${r.resumen.totalIntereses}`);
   });
 
   test('suma capital + abonos == monto (±0.01)', () => {
@@ -92,7 +90,7 @@ describe('simularCredito — abono $2.000.000 mes 3, reducir_plazo (§2.3)', () 
   });
 
   test('intereses 994.520', () => {
-    assert.ok(Math.abs(r.resumen.totalIntereses - 994520) < PESO_TOTAL, `intereses=${r.resumen.totalIntereses}`);
+    assert.ok(Math.abs(r.resumen.totalIntereses - 994521) < PESO, `intereses=${r.resumen.totalIntereses}`);
   });
 
   test('suma capital + abonos == monto (±0.01)', () => {

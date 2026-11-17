@@ -1,0 +1,8 @@
+# Páginas guardadas del simulador de Bancolombia: material de referencia local.
+# No se versionan porque son contenido de terceros (marca, scripts y trackers del banco)
+# y el repositorio es público.
+Crédito de libre inversión*
+
+node_modules/
+# El HTML final se genera con `npm run build`; la copia para la USB sale de aquí.
+dist/

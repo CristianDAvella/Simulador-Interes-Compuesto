@@ -15,7 +15,7 @@ Toda tasa se describe con cuatro datos:
 
 | Campo | Valores | Ejemplo |
 |---|---|---|
-| `valor` | número en % | 22,08 |
+| `valor` | fracción decimal en el motor (0,2208); la UI la recibe y la muestra en % | 0,2208 (= 22,08 %) |
 | `tipo` | `efectiva` \| `nominal` | nominal |
 | `m` | periodos por año: 12 mensual, 6 bimestral, 4 trimestral, 2 semestral, 1 anual | 12 |
 | `modalidad` | `vencida` \| `anticipada` | vencida |

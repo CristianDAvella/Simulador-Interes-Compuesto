@@ -2,7 +2,7 @@
 
 - **Autor:** Cristian D Avella
 - **Última actualización:** 2026-11-16
-- **Estado:** Inicial. Describe la arquitectura planeada; todavía no hay código.
+- **Estado:** Versión 0.1 implementada
 
 ## 1. Propósito
 
@@ -31,9 +31,11 @@ flowchart LR
 |---|---|---|
 | `src/engine/rates.js` | Convertir cualquier tasa (efectiva o nominal, m periodos, vencida o anticipada) a cualquier otra, usando la EA como pivote | Leer formularios, formatear texto |
 | `src/engine/amortization.js` | Generar la tabla de amortización con abonos (reducir cuota o plazo), el resumen y la comparación con y sin abonos | Convertir tasas: recibe la tasa mensual vencida ya convertida |
-| `src/ui/` | Formularios, validación visible, tablas, gráfica SVG, panel de fórmulas, formato colombiano de números | Hacer cálculos financieros |
-| `scripts/build.mjs` | Empaquetar todo en un solo HTML y verificar que no tenga referencias externas | — |
-| `tests/` | Casos de `calculation-flow.md` §1 y §2.3 | Probar la interfaz |
+| `src/ui/format.js` | Helpers puros de formato y parseo es-CO: redondeo a pesos (fuente de verdad del redondeo, §3.1), formateo de montos y porcentajes, parseo desde texto del usuario | Hacer cálculos; leer del DOM |
+| `src/ui/chart.js` | Dibuja gráfica SVG del saldo por mes (una o dos series según haya abonos válidos); sin librerías externas | Cálculos; gestionar estado |
+| `src/ui/app.js` + `index.html` + `styles.css` | Tres pestañas accesibles por teclado: simulador de crédito, conversor de tasas, fórmulas y convenciones. Formularios, validación visible, tablas, integración de la gráfica, panel de fórmulas | Hacer cálculos financieros |
+| `scripts/build.mjs` | Empaquetar `src/ui/app.js` (+ engine importado) + `styles.css` + `index.html` en un solo `dist/simulador.html` autocontenido y verificar que no tenga referencias externas (http(s), //, @import) | — |
+| `tests/` | Casos unitarios con `node --test` para `rates.js`, `amortization.js` y `format.js` (casos de `calculation-flow.md` §1 y §2.3) | Probar la interfaz gráfica |
 
 ## 3. Flujo de datos principal
 
@@ -66,17 +68,35 @@ Los algoritmos están en `docs/architecture/calculation-flow.md`.
 
 ```
 .
+├── .github/
+│   └── workflows/pages.yml      # GitHub Actions: test, build, deploy a Pages (ADR-003)
 ├── docs/
 │   ├── requirements/requirements-simulador-credito.md
 │   └── architecture/
 │       ├── architecture-blueprint.md
 │       ├── calculation-flow.md
 │       └── adrs/
+│           ├── 001-entregable-html-autocontenido.md
+│           ├── 002-codigo-modular-con-build-a-un-html.md
+│           └── 003-repositorio-publico-y-github-pages.md
 ├── src/
-│   ├── engine/        # rates.js, amortization.js
-│   └── ui/            # index.html, app.js, chart.js, styles.css
-├── tests/             # *.test.mjs
-├── scripts/build.mjs
-├── .github/workflows/ # deploy a Pages
-└── dist/              # salida del build (no versionada)
+│   ├── engine/
+│   │   ├── rates.js             # Conversión de tasas
+│   │   └── amortization.js      # Tabla de amortización y resumen
+│   └── ui/
+│       ├── index.html           # Esqueleto HTML (estilos y script se inyectan)
+│       ├── app.js               # Lógica de las tres pestañas y event handlers
+│       ├── chart.js             # Gráfica SVG del saldo
+│       ├── format.js            # Redondeo, formateo y parseo es-CO
+│       └── styles.css           # Estilos responsive
+├── tests/
+│   ├── rates.test.mjs
+│   ├── amortization.test.mjs
+│   └── format.test.mjs
+├── scripts/
+│   └── build.mjs                # esbuild: empaqueta a un HTML autocontenido
+├── package.json
+├── package-lock.json
+├── README.md
+└── dist/                        # salida del build: simulador.html (no versionado)
 ```

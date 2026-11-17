@@ -228,6 +228,12 @@ main {
   margin-bottom: 0.75rem;
 }
 
+/* Ancho mínimo: en celulares la tabla se desplaza dentro de .tabla-scroll en vez de
+   apretar los campos hasta volverlos ilegibles (review de calidad, 390 px). */
+.tabla-abonos {
+  min-width: 520px;
+}
+
 .tabla-abonos th,
 .tabla-abonos td,
 .tabla-amortizacion th,

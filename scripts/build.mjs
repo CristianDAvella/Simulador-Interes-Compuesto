@@ -61,10 +61,12 @@ function verificarAutocontenido(html) {
     problemas.push('Se encontró un url(http...) en CSS — no está permitido.');
   }
 
-  // http://, https:// o //cdn en cualquier parte, salvo el namespace SVG exacto.
+  // http://, https:// o protocol-relative (//host tras comilla, paréntesis o =) en
+  // cualquier parte, salvo el namespace SVG exacto. Antes solo se buscaba //cdn y un
+  // <img src="//host/x.png"> pasaba la verificación (review de seguridad).
   const sinNamespaceSvg = html.split('http://www.w3.org/2000/svg').join('');
-  if (/https?:\/\//i.test(sinNamespaceSvg) || /\/\/cdn/i.test(sinNamespaceSvg)) {
-    problemas.push('Se encontró una referencia a http://, https:// o //cdn distinta del namespace SVG.');
+  if (/https?:\/\//i.test(sinNamespaceSvg) || /["'(=]\s*\/\/[a-z0-9]/i.test(sinNamespaceSvg)) {
+    problemas.push('Se encontró una referencia a http://, https:// o //host distinta del namespace SVG.');
   }
 
   if (problemas.length > 0) {

@@ -18,7 +18,9 @@ function crear(tag, attrs = {}) {
  * "Sin abonos" vs "Con abonos") dentro del contenedor dado.
  *
  * @param {HTMLElement} contenedor
- * @param {{sinAbonos: number[], conAbonos: number[]}} series saldo final por mes (incluye mes 0 = monto inicial)
+ * @param {{sinAbonos: number[], conAbonos: number[]|null}} series saldo final por mes (incluye mes 0 = monto inicial).
+ *   conAbonos = null cuando no hay abonos válidos: se dibuja una sola serie "Saldo",
+ *   porque dos líneas idénticas con leyenda "Sin/Con abonos" confunden.
  */
 export function dibujarGraficaSaldo(contenedor, series) {
   contenedor.textContent = '';
@@ -28,8 +30,12 @@ export function dibujarGraficaSaldo(contenedor, series) {
   const margen = { arriba: 20, abajo: 36, izquierda: 90, derecha: 16 };
 
   const { sinAbonos, conAbonos } = series;
-  const maxMeses = Math.max(sinAbonos.length, conAbonos.length) - 1;
-  const maxSaldo = Math.max(1, ...sinAbonos, ...conAbonos);
+  const lineas = conAbonos
+    ? [[sinAbonos, '#9aa5b1', 'Sin abonos'], [conAbonos, '#2563a8', 'Con abonos']]
+    : [[sinAbonos, '#2563a8', 'Saldo']];
+  const todas = lineas.flatMap(([s]) => s);
+  const maxMeses = Math.max(...lineas.map(([s]) => s.length)) - 1;
+  const maxSaldo = Math.max(1, ...todas);
 
   const anchoUtil = ancho - margen.izquierda - margen.derecha;
   const altoUtil = alto - margen.arriba - margen.abajo;
@@ -138,32 +144,22 @@ export function dibujarGraficaSaldo(contenedor, series) {
     svg.appendChild(linea);
   }
 
-  dibujarSerie(sinAbonos, '#9aa5b1');
-  dibujarSerie(conAbonos, '#2563a8');
+  lineas.forEach(([serie, color]) => dibujarSerie(serie, color));
 
   contenedor.appendChild(svg);
 
   // Leyenda (HTML normal, fuera del SVG, para que sea fácil de leer e imprimir)
   const leyenda = document.createElement('div');
   leyenda.className = 'grafica-leyenda';
-
-  const item1 = document.createElement('span');
-  item1.className = 'grafica-leyenda__item';
-  const sw1 = document.createElement('span');
-  sw1.className = 'grafica-leyenda__muestra';
-  sw1.style.backgroundColor = '#9aa5b1';
-  item1.appendChild(sw1);
-  item1.appendChild(document.createTextNode('Sin abonos'));
-
-  const item2 = document.createElement('span');
-  item2.className = 'grafica-leyenda__item';
-  const sw2 = document.createElement('span');
-  sw2.className = 'grafica-leyenda__muestra';
-  sw2.style.backgroundColor = '#2563a8';
-  item2.appendChild(sw2);
-  item2.appendChild(document.createTextNode('Con abonos'));
-
-  leyenda.appendChild(item1);
-  leyenda.appendChild(item2);
+  lineas.forEach(([, color, etiqueta]) => {
+    const item = document.createElement('span');
+    item.className = 'grafica-leyenda__item';
+    const muestra = document.createElement('span');
+    muestra.className = 'grafica-leyenda__muestra';
+    muestra.style.backgroundColor = color;
+    item.appendChild(muestra);
+    item.appendChild(document.createTextNode(etiqueta));
+    leyenda.appendChild(item);
+  });
   contenedor.appendChild(leyenda);
 }

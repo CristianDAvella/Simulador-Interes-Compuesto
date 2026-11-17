@@ -441,7 +441,7 @@ function pintarTablaAmortizacion(resultado) {
   });
 }
 
-function pintarGrafica(resultadoBase, resultadoConAbonos) {
+function pintarGrafica(resultadoBase, resultadoConAbonos, hayAbonos) {
   const contenedor = document.getElementById('contenedor-grafica');
 
   const construirSerieSaldo = (resultado, montoInicial) => {
@@ -452,7 +452,7 @@ function pintarGrafica(resultadoBase, resultadoConAbonos) {
 
   const montoInicial = resultadoBase.filas.length > 0 ? resultadoBase.filas[0].saldoInicial : 0;
   const sinAbonos = construirSerieSaldo(resultadoBase, montoInicial);
-  const conAbonos = construirSerieSaldo(resultadoConAbonos, montoInicial);
+  const conAbonos = hayAbonos ? construirSerieSaldo(resultadoConAbonos, montoInicial) : null;
 
   dibujarGraficaSaldo(contenedor, { sinAbonos, conAbonos });
 }
@@ -473,7 +473,7 @@ function recalcularYPintar() {
   pintarComparacion(resultado.comparacion);
   pintarEventos(resultado.resultadoCredito);
   pintarTablaAmortizacion(resultado.resultadoCredito);
-  pintarGrafica(resultado.resultadoBase, resultado.resultadoCredito);
+  pintarGrafica(resultado.resultadoBase, resultado.resultadoCredito, Boolean(resultado.comparacion));
 }
 
 // ------------------------- Ejemplo documentado -------------------------

@@ -2,11 +2,11 @@
 
 Proyecto final de Ingeniería Económica. Simula un crédito de cuota fija, convierte entre expresiones de tasa (EA, MV, NAMV, anticipadas…) y permite registrar abonos extraordinarios a capital, eligiendo en cada uno si **reduce la cuota** o **reduce el plazo**.
 
-> Estado: en diseño. Todavía no hay versión usable.
+> Estado: Versión 0.1 — funcional.
 
 ## Para usarlo
 
-Abrir el archivo `simulador.html` con doble clic. No requiere instalación ni internet.
+Ejecutar `npm run build` y abrir el archivo generado `dist/simulador.html` con doble clic (por ejemplo, desde la USB). No requiere instalación ni internet. También hay una copia publicada en GitHub Pages como respaldo (ADR-003).
 
 ## Para desarrollar
 

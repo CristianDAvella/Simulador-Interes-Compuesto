@@ -1,6 +1,6 @@
 # Flujo de cálculo — Conversión de tasas y tabla de amortización con abonos
 
-- **Estado:** Propuesto (2026-11-16) — pendiente de revisión por Cristian D Avella
+- **Estado:** Aceptado (2026-11-16) por Cristian D Avella, incluidas las recomendaciones de §3.1 (precisión completa, redondeo al mostrar) y §3.2 (máximo un abono por mes)
 - **Requisitos:** RF-04, RF-04b, RF-05 a RF-11 (`docs/requirements/requirements-simulador-credito.md`)
 
 Este documento es la fuente de verdad de los algoritmos. Los cambios se hacen primero aquí y después en el código.
@@ -125,7 +125,7 @@ Crédito base: $10.000.000, 2 % mensual vencida, 12 meses → cuota $945.596; in
 
 ---
 
-## 3. Decisiones abiertas del algoritmo
+## 3. Decisiones del algoritmo (resueltas el 2026-11-16: alternativa A en ambas)
 
 ### 3.1 Redondeo
 

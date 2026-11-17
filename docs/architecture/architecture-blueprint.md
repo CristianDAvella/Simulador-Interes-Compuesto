@@ -49,7 +49,7 @@ Los algoritmos están en `docs/architecture/calculation-flow.md`.
 
 - El motor no usa el DOM ni la red, y no depende de la UI (ADR-002).
 - El entregable no tiene ninguna referencia a recursos externos y funciona sin internet (ADR-001, RNF-01).
-- Los cálculos usan precisión completa. Se redondea solo al mostrar (`calculation-flow.md` §3.1, pendiente de confirmar).
+- Los cálculos usan precisión completa. Se redondea solo al mostrar (`calculation-flow.md` §3.1).
 - Ningún dato del usuario sale de su navegador (RNF-05).
 
 ## 5. Stack

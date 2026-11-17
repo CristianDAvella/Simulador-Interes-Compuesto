@@ -1,0 +1,19 @@
+{
+  "name": "simulador-credito-abonos",
+  "version": "0.1.0",
+  "description": "Simulador de crédito con conversión de tasas y abonos a capital (reducir cuota o plazo).",
+  "author": "Cristian D Avella",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test tests/",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

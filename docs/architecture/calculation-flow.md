@@ -104,7 +104,7 @@ flowchart TD
 
 **Convenciones** (supuestos A5 y A6, que se declaran en pantalla):
 1. El abono se aplica **después** de la cuota ordinaria del mes y va 100 % a capital.
-2. Si se reduce el plazo, la última cuota es **residual**: es igual a saldo + interés y puede ser menor que la cuota vigente.
+2. Si se reduce el plazo, la última cuota es **residual**: es igual a saldo + interés y puede ser menor que la cuota vigente. Se marca como residual solo si es al menos medio peso menor, porque una diferencia de centavos no se ve después de redondear.
 3. Si un abono posterior reduce la cuota, la nueva cuota se calcula sobre `restantes` y la residual desaparece, porque todas las cuotas vuelven a ser iguales.
 4. Un abono en un mes en el que el crédito ya está cancelado (por abonos anteriores) es un error de validación (RF-10). Se informa al usuario indicando cuál abono es.
 

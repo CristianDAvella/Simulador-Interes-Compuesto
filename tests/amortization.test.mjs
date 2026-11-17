@@ -275,3 +275,19 @@ describe('compararEscenarios (RF-11)', () => {
     assert.equal(r.conAbonos.resumen.numeroCuotas, 10);
   });
 });
+
+describe('esResidual: umbral de medio peso (§2.2, convención 2)', () => {
+  test('una última cuota que difiere en centavos no se marca residual', () => {
+    // Abono elegido para que la última cuota quede ~$0,39 por debajo de la vigente.
+    const r = simularCredito({ monto: 10_000_000, tasaMensual: 0.02, plazo: 12,
+      abonos: [{ mes: 3, monto: 2_421_488, modo: 'reducir_plazo' }] });
+    const ultima = r.filas.at(-1);
+    assert.ok(ultima.cuota < r.cuotaInicial && r.cuotaInicial - ultima.cuota < 0.5);
+    assert.equal(ultima.esResidual, false);
+  });
+  test('la residual del ejemplo documentado sí se marca', () => {
+    const r = simularCredito({ monto: 10_000_000, tasaMensual: 0.02, plazo: 12,
+      abonos: [{ mes: 3, monto: 2_000_000, modo: 'reducir_plazo' }] });
+    assert.equal(r.filas.at(-1).esResidual, true);
+  });
+});

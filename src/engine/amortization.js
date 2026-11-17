@@ -9,6 +9,8 @@
 // Tolerancia para comparaciones de "saldo en cero" por acumulación de error
 // de punto flotante tras muchas restas sucesivas (§2.2, nodo "¿saldo > 0?").
 const EPS = 1e-6;
+// Diferencia mínima (en pesos) para considerar residual la última cuota.
+const UMBRAL_RESIDUAL = 0.5;
 
 // Tolerancia en pesos para considerar que un abono "coincide" con el saldo
 // pendiente (calculation-flow.md §2.3: "abono igual al saldo"). Por encima de
@@ -151,7 +153,10 @@ export function simularCredito({ monto, tasaMensual, plazo, abonos = [] }) {
     if (esUltima) {
       cuotaK = saldoInicial + interes;
       capital = saldoInicial;
-      esResidual = cuotaK < cuota - 0.5;
+      // Umbral de medio peso, no EPS: una última cuota que difiere en centavos se
+      // muestra idéntica a las demás tras redondear (§3.1), y marcarla "residual"
+      // confundiría al lector. Ver calculation-flow.md §2.2, convención 2.
+      esResidual = cuotaK < cuota - UMBRAL_RESIDUAL;
     } else {
       cuotaK = cuota;
       capital = cuotaK - interes;
